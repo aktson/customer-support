@@ -1,0 +1,33 @@
+"use client";
+/***** IMPORTS *****/
+import React, { FC, ReactNode } from "react";
+import { Button } from "@mantine/core";
+import { ButtonProps } from "@/types/types";
+
+/***** COMPONENT-FUNCTION *****/
+const PrimaryBtn: FC<ButtonProps> = ({ className, type, disabled, loading, onClick, children, fullWidth, leftIcon }): JSX.Element => {
+	/** return statement */
+	return (
+		<Button
+			variant="filled"
+			fullWidth={fullWidth}
+			radius="md"
+			type={type}
+			onClick={onClick}
+			loading={loading}
+			loaderPosition="right"
+			uppercase={true}
+			leftIcon={leftIcon}
+			disabled={disabled}
+			styles={() => ({
+				leftIcon: {
+					marginRight: "0.3em",
+				},
+			})}>
+			{children}
+		</Button>
+	);
+};
+
+/***** EXPORTS *****/
+export default PrimaryBtn;
