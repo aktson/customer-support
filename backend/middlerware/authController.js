@@ -12,22 +12,22 @@ import { JWT_SECRET } from "../api/users/usersController.js";
  * @param {function} next() 
  * @return {void} object with error
  */
-export const protectRoute = asyncHandler(async (req, res, next) => {
+const protectRoute = asyncHandler(async (req, res, next) => {
     let token;
-    
-    if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-    
+
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+
         try {
-          // Get token from the header 
-          token = req.headers.authorization.split(" ")[1];
+            // Get token from the header 
+            token = req.headers.authorization.split(" ")[1];
 
-          // Verify token
-          const decoded = jwt.verify(token, JWT_SECRET);
-       
-          // Get user from token
-          req.user = await User.findOne(decoded._id).select("-password");
+            // Verify token
+            const decoded = jwt.verify(token, JWT_SECRET);
 
-          next();
+            // Get user from token
+            req.user = await User.findOne(decoded._id).select("-password");
+
+            next();
 
         } catch (error) {
             console.log(error)
@@ -35,8 +35,9 @@ export const protectRoute = asyncHandler(async (req, res, next) => {
             throw new Error("Not authorized")
         }
     }
-    if(!token) {
+    if (!token) {
         res.status(401)
         throw new Error("Not authorized")
     }
 })
+export default protectRoute;

@@ -1,21 +1,30 @@
 "use client";
 /***** IMPORTS *****/
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Flex, Container } from "@mantine/core";
 import { useRouter, usePathname } from "next/navigation";
 import SubtleBtn from "@/components/common/buttons/SubtelBtn";
 import { Login, User, Home, UserCircle, Logout } from "tabler-icons-react";
 import { useAuth } from "@/context/AuthContext";
-
-/***** TYPES *****/
-interface HeaderProps {}
+import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 
 /***** COMPONENT-FUNCTION *****/
-const Header: FC<HeaderProps> = (): JSX.Element => {
+const Header: FC = (): JSX.Element => {
+	/*** Variables ***/
 	const router = useRouter();
-
-	const { auth, setAuth } = useAuth();
 	const pathname = usePathname();
+	const { auth, setAuth } = useAuth();
+
+	/*** Functions ***/
+
+	/** logs out user
+	 * @param {}
+	 * @return {void}
+	 */
+	const logout = (): void => {
+		setAuth(null);
+		router.push("/");
+	};
 
 	/*** Return statement ***/
 	return (
@@ -35,9 +44,9 @@ const Header: FC<HeaderProps> = (): JSX.Element => {
 									color={pathname === "/profile" ? "blue" : "gray"}>
 									{auth.name}
 								</SubtleBtn>
-								<SubtleBtn leftIcon={<Logout />} onClick={() => setAuth(null)}>
+								<PrimaryBtn leftIcon={<Logout />} onClick={logout}>
 									Sign out
-								</SubtleBtn>
+								</PrimaryBtn>
 							</>
 						) : (
 							<>

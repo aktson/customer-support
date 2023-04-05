@@ -2,7 +2,7 @@
 /***** IMPORTS *****/
 import axios from "axios";
 import React, { ChangeEvent, FC, useState } from "react";
-import { TextInput, PasswordInput, Text, Group, Stack, Container } from "@mantine/core";
+import { TextInput, PasswordInput, Text, Group, Stack, Container, LoadingOverlay } from "@mantine/core";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 import LinkElement from "@/components/common/LinkElement";
 import { SignInFormData } from "@/types/types";
@@ -82,6 +82,7 @@ const Signin: FC = (): JSX.Element => {
 						</Text>
 					</Group>
 				</form>
+				<LoadingOverlay visible={isSubmitting} overlayBlur={2} />
 			</CardCustom>
 		</Container>
 	);

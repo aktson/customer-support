@@ -1,7 +1,7 @@
 /*** IMPORTS ***/
 import express from "express";
-import { loginUser,registerUser, getMe } from "./usersController.js";
-import { protectRoute } from "../../middlerware/authController.js";
+import { loginUser, registerUser, getMe } from "./usersController.js";
+import protectRoute from "../../middlerware/authController.js";
 
 const router = express.Router();
 

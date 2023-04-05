@@ -11,7 +11,7 @@ interface CardCustomProps {
 const CardCustom: FC<CardCustomProps> = ({ children }): JSX.Element => {
 	/*** Return statement ***/
 	return (
-		<Card sx={{ maxWidth: "500px" }} m="2em auto" withBorder p="3em">
+		<Card sx={{ maxWidth: "500px", position: "relative" }} m="2em auto" withBorder p="3em">
 			{children}
 		</Card>
 	);

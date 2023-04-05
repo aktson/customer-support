@@ -1,6 +1,6 @@
 import "./globals.css";
-import Header from "@/app/layout/Header";
-import Footer from "@/app/layout/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import Notification from "@/components/common/Notification";
 

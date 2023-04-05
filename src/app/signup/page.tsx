@@ -2,7 +2,7 @@
 /***** IMPORTS *****/
 import React, { ChangeEvent, FC, useState } from "react";
 import axios from "axios";
-import { TextInput, PasswordInput, Text, Group, Stack, Container } from "@mantine/core";
+import { TextInput, PasswordInput, Text, Group, Stack, Container, LoadingOverlay } from "@mantine/core";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 import LinkElement from "@/components/common/LinkElement";
 import { SignUpFormData } from "@/types/types";
@@ -52,7 +52,7 @@ const Signup: FC = (): JSX.Element => {
 				router.push("/signin");
 			}
 		} catch (error: any) {
-			notifications.show({ message: error?.response?.data?.message, color: "red" });
+			notifications.show({ message: error?.response?.data?.message, color: "red", autoClose: 5000 });
 			console.log(error);
 		} finally {
 			setIsSubmitting(false);
@@ -81,6 +81,7 @@ const Signup: FC = (): JSX.Element => {
 						</Text>
 					</Group>
 				</form>
+				<LoadingOverlay visible={isSubmitting} overlayBlur={2} />
 			</CardCustom>
 		</Container>
 	);
