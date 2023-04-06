@@ -21,7 +21,7 @@ const SecondaryBtn: FC<ButtonProps> = ({ className, disabled, loading, onClick, 
 			styles={() => ({
 				leftIcon: {
 					marginRight: "0.3em",
-					fontSize: "1.7em",
+					fontSize: "1em",
 					width: "1.5em",
 					height: "2em",
 				},

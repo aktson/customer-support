@@ -50,6 +50,7 @@ const Signin: FC = (): JSX.Element => {
 			if (response.statusText === "OK") {
 				setAuth(response.data);
 				notifications.show({ message: "Login successful!", color: "green" });
+				// setFormData({ email: "", password: "" });
 				router.push("/");
 			}
 		} catch (error: any) {

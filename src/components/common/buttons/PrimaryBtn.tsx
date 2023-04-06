@@ -22,7 +22,7 @@ const PrimaryBtn: FC<ButtonProps> = ({ className, type, disabled, loading, onCli
 			styles={() => ({
 				leftIcon: {
 					marginRight: "0.3em",
-					fontSize: "1.7em",
+					fontSize: "1em",
 					width: "1.5em",
 					height: "2em",
 				},

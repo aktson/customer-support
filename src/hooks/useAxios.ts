@@ -1,9 +1,10 @@
-import React from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 function useAxios() {
-	const url = process.env.REACT_APP_BASE_URL;
+	const REACT_APP_BASE_URL = "http://localhost:5000/api";
+	// const url = process.env.REACT_APP_BASE_URL;
+	const url = REACT_APP_BASE_URL;
 
 	const { auth } = useAuth();
 
