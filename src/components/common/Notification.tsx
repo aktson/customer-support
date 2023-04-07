@@ -11,7 +11,7 @@ const Notification: FC<NotificationProps> = (): JSX.Element => {
 	/*** Return statement ***/
 	return (
 		<>
-			<Notifications defaultChecked position="top-right" autoClose={3000} />
+			<Notifications defaultChecked position="bottom-right" autoClose={3000} />
 		</>
 	);
 };

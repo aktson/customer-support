@@ -9,6 +9,7 @@ import { SignUpFormData } from "@/types/types";
 import CardCustom from "@/components/common/CardCustom";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/constants/settings";
 
 /***** COMPONENT-FUNCTION *****/
 const Signup: FC = (): JSX.Element => {
@@ -46,7 +47,7 @@ const Signup: FC = (): JSX.Element => {
 		setIsSubmitting(true);
 
 		try {
-			const response = await axios.post("http://localhost:5000/api/users", formData);
+			const response = await axios.post(BASE_URL + "/users", formData);
 			if (response.statusText === "Created") {
 				notifications.show({ message: "User registered", color: "green" });
 				router.push("/signin");

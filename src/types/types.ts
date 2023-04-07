@@ -32,3 +32,12 @@ export interface AuthObject {
 	token: string;
 	_id: string;
 }
+export interface Ticket {
+	description: string;
+	product: string;
+	user: string;
+	_id: string;
+	status: string;
+	createdAt: string;
+	updatedAt: string;
+}

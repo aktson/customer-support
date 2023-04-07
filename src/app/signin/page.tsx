@@ -10,6 +10,7 @@ import CardCustom from "@/components/common/CardCustom";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
+import { BASE_URL } from "@/constants/settings";
 
 /***** COMPONENT-FUNCTION *****/
 const Signin: FC = (): JSX.Element => {
@@ -45,7 +46,7 @@ const Signin: FC = (): JSX.Element => {
 		setIsSubmitting(true);
 
 		try {
-			const response = await axios.post("http://localhost:5000/api/users/login", formData);
+			const response = await axios.post(BASE_URL + "/users/login", formData);
 
 			if (response.statusText === "OK") {
 				setAuth(response.data);
