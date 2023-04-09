@@ -1,11 +1,13 @@
 "use client";
 /***** IMPORTS *****/
 import Section from "@/components/common/Section";
+import SecondaryBtn from "@/components/common/buttons/SecondaryBtn";
 import { BASE_URL } from "@/constants/settings";
 import useAxios from "@/hooks/useAxios";
 import { Ticket } from "@/types/types";
-import { Badge, Grid, Loader } from "@mantine/core";
+import { Badge, Grid, Loader, Table } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import Link from "next/link";
 import React, { FC, Suspense, useEffect, useState } from "react";
 
 /***** TYPES *****/
@@ -37,19 +39,35 @@ const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
 	/*** Return statement ***/
 	return (
 		<Suspense fallback={<Loader />}>
-			<Section>
-				{data.map((ticket: Ticket) => {
-					return (
-						<Grid key={ticket._id} my={16} sx={{ border: "1px solid gray" }}>
-							<Grid.Col span={3}>{ticket.product}</Grid.Col>
-							<Grid.Col span={3}>{ticket.description}</Grid.Col>
-							<Grid.Col span={3}>{ticket.createdAt}</Grid.Col>
-							<Grid.Col span={3}>
-								<Badge color="teal">{ticket.status} </Badge>
-							</Grid.Col>
-						</Grid>
-					);
-				})}
+			<Section size="sm">
+				<Table verticalSpacing="sm" striped>
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Product</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{data.map((ticket: Ticket) => {
+							return (
+								<tr key={ticket._id}>
+									<td>{new Date(ticket.createdAt).toLocaleString("da-DK")}</td>
+									<td>{ticket.product}</td>
+									<td>
+										<Badge color="teal">{ticket.status} </Badge>
+									</td>
+									<td>
+										<SecondaryBtn compact={true}>
+											<Link href={`/ticket/${ticket._id}`}>view</Link>
+										</SecondaryBtn>
+									</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</Table>
 			</Section>
 		</Suspense>
 	);
