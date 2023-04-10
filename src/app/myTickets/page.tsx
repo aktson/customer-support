@@ -2,43 +2,27 @@
 /***** IMPORTS *****/
 import Section from "@/components/common/Section";
 import SecondaryBtn from "@/components/common/buttons/SecondaryBtn";
-import { BASE_URL } from "@/constants/settings";
-import useAxios from "@/hooks/useAxios";
+import { useTickets } from "@/context/TicketsContext";
 import { Ticket } from "@/types/types";
-import { Badge, Grid, Loader, Table } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { Badge, Loader, Table } from "@mantine/core";
+import Head from "next/head";
 import Link from "next/link";
-import React, { FC, Suspense, useEffect, useState } from "react";
+import React, { FC, Suspense } from "react";
 
 /***** TYPES *****/
 interface MyTicketsProps {}
 
 /***** COMPONENT-FUNCTION *****/
 const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
-	const [data, setData] = useState<Ticket[] | []>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const http = useAxios();
-
-	const fetchTickets = async () => {
-		try {
-			const response = await http.get(BASE_URL + "/tickets");
-
-			if (response.statusText === "OK") {
-				setData(response.data);
-			}
-		} catch (error) {
-			console.log(error);
-			notifications.show({ message: "Could not fetch", color: "red" });
-		}
-	};
-
-	useEffect(() => {
-		fetchTickets();
-	}, []);
+	/*** Variables ***/
+	const { tickets } = useTickets();
 
 	/*** Return statement ***/
 	return (
 		<Suspense fallback={<Loader />}>
+			<Head>
+				<title>My tickets</title>
+			</Head>
 			<Section size="sm">
 				<Table verticalSpacing="sm" striped>
 					<thead>
@@ -50,7 +34,7 @@ const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
 						</tr>
 					</thead>
 					<tbody>
-						{data.map((ticket: Ticket) => {
+						{tickets.map((ticket: Ticket) => {
 							return (
 								<tr key={ticket._id}>
 									<td>{new Date(ticket.createdAt).toLocaleString("da-DK")}</td>

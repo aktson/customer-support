@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import Notification from "@/components/common/Notification";
+import { TicketsProvider } from "@/context/TicketsContext";
 
 export const metadata = {
 	title: "Create Next App",
@@ -14,10 +15,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body>
 				<AuthProvider>
-					<Header />
-					<main>{children}</main>
-					<Footer />
-					<Notification />
+					<TicketsProvider>
+						<Header />
+						<main>{children}</main>
+						<Footer />
+						<Notification />
+					</TicketsProvider>
 				</AuthProvider>
 			</body>
 		</html>

@@ -1,8 +1,9 @@
 "use client";
-import CardCustom from "@/components/common/CardCustom";
 /***** IMPORTS *****/
+import CardCustom from "@/components/common/CardCustom";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 import { useAuth } from "@/context/AuthContext";
+import { useTickets } from "@/context/TicketsContext";
 import useAxios from "@/hooks/useAxios";
 import { NativeSelect, Stack, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
@@ -23,6 +24,7 @@ const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 	const http = useAxios();
 	const router = useRouter();
 	const { auth } = useAuth();
+	const { setTickets, tickets } = useTickets();
 
 	/*** Functions ***/
 
@@ -35,13 +37,15 @@ const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 		event.preventDefault();
 		const formdata = { product: product, description: description };
 
-		setIsSubmitting(false);
+		setIsSubmitting(true);
 
 		try {
 			const response = await http.post("/tickets", formdata);
 
 			if (response.statusText === "Created") {
+				console.log(response.data);
 				notifications.show({ message: "Issue added successfully!", color: "green" });
+				setTickets([...tickets, response.data]);
 				setDescription("");
 				setProduct("");
 			}
