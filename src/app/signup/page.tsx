@@ -1,6 +1,6 @@
 "use client";
 /***** IMPORTS *****/
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import axios from "axios";
 import { TextInput, PasswordInput, Text, Group, Stack, Container, LoadingOverlay } from "@mantine/core";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
@@ -10,6 +10,7 @@ import CardCustom from "@/components/common/CardCustom";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/constants/settings";
+import { useAuth } from "@/context/AuthContext";
 
 /***** COMPONENT-FUNCTION *****/
 const Signup: FC = (): JSX.Element => {
@@ -23,6 +24,7 @@ const Signup: FC = (): JSX.Element => {
 
 	/*** Variables ***/
 	const router = useRouter();
+	const { auth } = useAuth();
 
 	/*** Functions ***/
 
@@ -59,6 +61,11 @@ const Signup: FC = (): JSX.Element => {
 			setIsSubmitting(false);
 		}
 	};
+
+	/*** Effects ***/
+	useEffect(() => {
+		if (auth) return router.push("/");
+	}, [auth]);
 
 	/*** Return statement ***/
 	return (

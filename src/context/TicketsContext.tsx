@@ -5,6 +5,7 @@ import { Ticket } from "@/types/types";
 import useAxios from "@/hooks/useAxios";
 import { BASE_URL } from "@/constants/settings";
 import { notifications } from "@mantine/notifications";
+import { useAuth } from "./AuthContext";
 
 /***** TYPES *****/
 interface ProviderProps {
@@ -26,6 +27,7 @@ export function TicketsProvider({ children }: ProviderProps) {
 
 	/*** Variables ***/
 	const http = useAxios();
+	const { auth } = useAuth();
 
 	/*** Functions ***/
 
@@ -36,6 +38,8 @@ export function TicketsProvider({ children }: ProviderProps) {
 	 */
 	const fetchTickets = async () => {
 		setIsLoading(true);
+
+		if (!auth) return;
 		try {
 			const response = await http.get(BASE_URL + "/tickets");
 

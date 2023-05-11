@@ -1,7 +1,6 @@
 "use client";
 /***** IMPORTS *****/
 import { BASE_URL } from "@/constants/settings";
-import { useAuth } from "@/context/AuthContext";
 import useAxios from "@/hooks/useAxios";
 import { notifications } from "@mantine/notifications";
 import { useRouter, usePathname, notFound } from "next/navigation";
@@ -13,6 +12,7 @@ import { ArrowBack, CircleLetterX } from "tabler-icons-react";
 import { Flex, Paper, Stack, Space, Badge } from "@mantine/core";
 import { getLocalTimeString } from "@/constants/actions";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
+import { authenticate } from "@/constants/authenticate";
 
 /***** TYPES *****/
 interface TicketProps {}
@@ -26,7 +26,6 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 	/*** Variables ***/
 	const http = useAxios();
 	const router = useRouter();
-	const { auth } = useAuth();
 	const pathname = usePathname();
 
 	const ticketId = pathname.split("/").slice(-1).toString();
@@ -51,17 +50,14 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 		}
 	};
 
-	console.log(ticket);
-
 	/*** Effect ***/
 
 	//redirects from page if not logged in
 	//fetches single ticket if there is id
 	useEffect(() => {
-		if (!auth) router.push("/");
 		if (!ticketId) return;
 		fetchTicket();
-	}, [ticketId, auth]);
+	}, [ticketId]);
 
 	if (!ticketId) return notFound();
 	/*** Return statement ***/
@@ -93,4 +89,4 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 		</Section>
 	);
 };
-export default Ticket;
+export default authenticate(Ticket);

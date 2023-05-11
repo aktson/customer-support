@@ -3,6 +3,7 @@ import CardCustom from "@/components/common/CardCustom";
 /***** IMPORTS *****/
 import Section from "@/components/common/Section";
 import SecondaryBtn from "@/components/common/buttons/SecondaryBtn";
+import { authenticate } from "@/constants/authenticate";
 import { useTickets } from "@/context/TicketsContext";
 import { Ticket } from "@/types/types";
 import { Badge, Loader, Table, Text } from "@mantine/core";
@@ -66,4 +67,4 @@ const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
 	);
 };
 
-export default MyTickets;
+export default authenticate(MyTickets);

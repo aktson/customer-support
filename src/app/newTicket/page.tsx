@@ -2,6 +2,7 @@
 /***** IMPORTS *****/
 import CardCustom from "@/components/common/CardCustom";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
+import { authenticate } from "@/constants/authenticate";
 import { useAuth } from "@/context/AuthContext";
 import { useTickets } from "@/context/TicketsContext";
 import useAxios from "@/hooks/useAxios";
@@ -61,9 +62,9 @@ const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 	/*** Effect ***/
 
 	//redirects from page if not logged in
-	useEffect(() => {
-		if (!auth) router.push("/");
-	}, []);
+	// useEffect(() => {
+	// 	if (!auth) router.push("/");
+	// }, []);
 
 	/*** Return statement ***/
 	return (
@@ -100,4 +101,4 @@ const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 	);
 };
 
-export default NewTicket;
+export default authenticate(NewTicket);

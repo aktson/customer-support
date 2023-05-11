@@ -7,6 +7,7 @@ import SubtleBtn from "@/components/common/buttons/SubtelBtn";
 import { Login, User, Home, UserCircle, Logout } from "tabler-icons-react";
 import { useAuth } from "@/context/AuthContext";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
+import dynamic from "next/dynamic";
 
 /***** COMPONENT-FUNCTION *****/
 const Header: FC = (): JSX.Element => {
@@ -71,4 +72,4 @@ const Header: FC = (): JSX.Element => {
 	);
 };
 
-export default Header;
+export default dynamic(() => Promise.resolve(Header), { ssr: false });
