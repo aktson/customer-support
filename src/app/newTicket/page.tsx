@@ -5,7 +5,7 @@ import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 import { useAuth } from "@/context/AuthContext";
 import { useTickets } from "@/context/TicketsContext";
 import useAxios from "@/hooks/useAxios";
-import { NativeSelect, Stack, TextInput, Textarea } from "@mantine/core";
+import { Select, Stack, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
@@ -17,8 +17,10 @@ interface NewTicketProps {}
 const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 	/*** States ***/
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [product, setProduct] = useState("");
-	const [description, setDescription] = useState("");
+	const [product, setProduct] = useState<string | null>("");
+	const [description, setDescription] = useState<string | null>("");
+	const [productError, setProductError] = useState<string | null>("");
+	const [descriptionError, setDescriptionError] = useState<string | null>("");
 
 	/*** Variables ***/
 	const http = useAxios();
@@ -36,18 +38,17 @@ const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 	const handleFormSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		const formdata = { product: product, description: description };
-
+		product === "" ? setProductError("Please select atleast one") : setProductError(null);
+		description === "" ? setDescriptionError("Description missing") : setDescriptionError(null);
 		setIsSubmitting(true);
 
 		try {
 			const response = await http.post("/tickets", formdata);
 
 			if (response.statusText === "Created") {
-				console.log(response.data);
 				notifications.show({ message: "Issue added successfully!", color: "green" });
 				setTickets([...tickets, response.data]);
-				setDescription("");
-				setProduct("");
+				router.push(`/ticket/${response.data._id}`);
 			}
 		} catch (error: any) {
 			notifications.show({ message: error?.response?.data?.message, color: "red" });
@@ -71,22 +72,23 @@ const NewTicket: FC<NewTicketProps> = (): JSX.Element => {
 				<Stack spacing="xl">
 					<TextInput label="Name" name="name" value={auth.name} disabled radius="md" />
 					<TextInput label="Email" name="email" placeholder="Your email" value={auth.email} disabled radius="md" />
-					<NativeSelect
+					<Select
+						label="Choose product"
+						placeholder="Pick one"
 						data={["Iphone", "Macbook", "IMac", "Ipad"]}
-						label="Product"
-						placeholder="Choose product"
-						withAsterisk
 						value={product}
-						onChange={(e) => setProduct(e.currentTarget.value)}
+						clearable
+						error={productError}
+						onChange={setProduct}
 					/>
 
 					<Textarea
-						required
 						label="Description"
 						name="description"
 						placeholder="Decription of issue"
-						value={description}
+						value={description || ""}
 						onChange={(e) => setDescription(e.target.value)}
+						error={descriptionError}
 						radius="md"
 					/>
 					<PrimaryBtn type="submit" loading={isSubmitting}>

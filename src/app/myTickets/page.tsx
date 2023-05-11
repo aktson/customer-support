@@ -1,10 +1,11 @@
 "use client";
+import CardCustom from "@/components/common/CardCustom";
 /***** IMPORTS *****/
 import Section from "@/components/common/Section";
 import SecondaryBtn from "@/components/common/buttons/SecondaryBtn";
 import { useTickets } from "@/context/TicketsContext";
 import { Ticket } from "@/types/types";
-import { Badge, Loader, Table } from "@mantine/core";
+import { Badge, Loader, Table, Text } from "@mantine/core";
 import Head from "next/head";
 import Link from "next/link";
 import React, { FC, Suspense } from "react";
@@ -17,6 +18,14 @@ const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
 	/*** Variables ***/
 	const { tickets } = useTickets();
 
+	if (tickets.length < 1)
+		return (
+			<CardCustom>
+				<Text c="dimmed" ta="center">
+					No tickets found
+				</Text>
+			</CardCustom>
+		);
 	/*** Return statement ***/
 	return (
 		<Suspense fallback={<Loader />}>
