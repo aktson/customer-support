@@ -1,7 +1,7 @@
 "use client";
 /***** IMPORTS *****/
 import React, { FC } from "react";
-import { Flex, Container } from "@mantine/core";
+import { Flex, Container, Text } from "@mantine/core";
 import { useRouter, usePathname } from "next/navigation";
 import SubtleBtn from "@/components/common/buttons/SubtelBtn";
 import { Login, User, Home, UserCircle, Logout } from "tabler-icons-react";
@@ -32,7 +32,9 @@ const Header: FC = (): JSX.Element => {
 		<header>
 			<Container size="lg">
 				<Flex justify="space-between" align="center">
-					<h2>LOGO</h2>
+					<Text variant="gradient" fz="lg" gradient={{ from: "indigo", to: "cyan", deg: 45 }} fw={700}>
+						SupportDesk
+					</Text>
 					<Flex gap={8} align="center">
 						<SubtleBtn onClick={() => router.push("/")} leftIcon={<Home />} color={pathname === "/" ? "blue" : "gray"}>
 							Home

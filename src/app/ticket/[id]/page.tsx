@@ -13,6 +13,8 @@ import { Flex, Paper, Stack, Space, Badge } from "@mantine/core";
 import { getLocalTimeString } from "@/constants/actions";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 import { authenticate } from "@/constants/authenticate";
+import { useTickets } from "@/context/TicketsContext";
+import dynamic from "next/dynamic";
 
 /***** TYPES *****/
 interface TicketProps {}
@@ -27,6 +29,7 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 	const http = useAxios();
 	const router = useRouter();
 	const pathname = usePathname();
+	const { setTickets, tickets } = useTickets();
 
 	const ticketId = pathname.split("/").slice(-1).toString();
 
@@ -50,6 +53,33 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 		}
 	};
 
+	/**
+	 * @description Submits new ticket request to backend
+	 * @param {event}
+	 * @return {void}
+	 */
+	const handleCloseTicket = async () => {
+		if (ticket.status === "closed") return;
+
+		let confirm = window.confirm("Would you like to close ticket?");
+		if (confirm) {
+			try {
+				const response = await http.put(BASE_URL + `/tickets/${ticketId}`, { status: "closed" });
+
+				if (response.statusText === "OK") {
+					setTicket(response.data);
+					const updatedTickets = tickets.filter((item) => item._id !== response.data._id);
+
+					setTickets([response.data, ...updatedTickets]);
+					notifications.show({ message: "Ticket closed", color: "green" });
+				}
+			} catch (error) {
+				console.log(error);
+				notifications.show({ message: "Could not fetch", color: "red" });
+			}
+		}
+	};
+
 	/*** Effect ***/
 
 	//redirects from page if not logged in
@@ -68,13 +98,15 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 					<SecondaryBtn leftIcon={<ArrowBack />} onClick={() => router.push("/myTickets")}>
 						Back
 					</SecondaryBtn>
-					<PrimaryBtn leftIcon={<CircleLetterX />} onClick={() => router.push("/myTickets")}>
-						Close Ticket
-					</PrimaryBtn>
+					{ticket.status === "new" && (
+						<PrimaryBtn leftIcon={<CircleLetterX />} onClick={handleCloseTicket}>
+							close ticket
+						</PrimaryBtn>
+					)}
 				</Flex>
 				<Stack spacing="sm">
 					<h2>
-						Product: {ticket?.product} <Badge color="teal">{ticket.status} </Badge>
+						Product: {ticket?.product} <Badge color={`${ticket.status === "new" ? "green" : "red"}`}>{ticket.status} </Badge>
 					</h2>
 					<h4>TicketId: {ticket?._id} </h4>
 					<p>Date Submitted: {ticket.createdAt && getLocalTimeString(ticket?.createdAt)}</p>
@@ -89,4 +121,5 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 		</Section>
 	);
 };
-export default authenticate(Ticket);
+
+export default dynamic(() => Promise.resolve(authenticate(Ticket)), { ssr: false });

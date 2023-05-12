@@ -1,10 +1,11 @@
 "use client";
 /***** IMPORTS *****/
 import React, { FC } from "react";
-import { createStyles, Group, ActionIcon, Flex } from "@mantine/core";
+import { createStyles, Group, ActionIcon, Flex, Text } from "@mantine/core";
 import { BrandTwitter, BrandYoutube, BrandInstagram } from "tabler-icons-react";
 
 import Section from "../common/Section";
+import LinkElement from "../common/LinkElement";
 
 //styles
 const useStyles = createStyles((theme) => ({
@@ -23,7 +24,15 @@ const Footer: FC = (): JSX.Element => {
 		<footer className={classes.footer}>
 			<Section>
 				<Flex align="center" justify="space-between">
-					<h4>LOGO</h4>
+					<Text variant="gradient" fz="md" gradient={{ from: "indigo", to: "cyan", deg: 45 }} fw={700}>
+						SupportDesk
+					</Text>
+					<Text color="dimmed" size="sm">
+						© 2023 utviklet av
+						<LinkElement href="https://ankitsoni.dev/" target="_blank">
+							AnkSon
+						</LinkElement>
+					</Text>
 					<Group spacing={0} position="right" noWrap>
 						<ActionIcon size="lg">
 							<BrandTwitter size="1.05rem" />

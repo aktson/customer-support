@@ -56,7 +56,7 @@ export function TicketsProvider({ children }: ProviderProps) {
 
 	useEffect(() => {
 		fetchTickets();
-	}, []);
+	}, [auth]);
 	return <TicketsContext.Provider value={{ tickets, setTickets, isLoading }}>{children}</TicketsContext.Provider>;
 }
 

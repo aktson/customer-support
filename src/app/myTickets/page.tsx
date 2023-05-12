@@ -7,6 +7,7 @@ import { authenticate } from "@/constants/authenticate";
 import { useTickets } from "@/context/TicketsContext";
 import { Ticket } from "@/types/types";
 import { Badge, Loader, Table, Text } from "@mantine/core";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import React, { FC, Suspense } from "react";
@@ -50,7 +51,7 @@ const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
 									<td>{new Date(ticket.createdAt).toLocaleString("da-DK")}</td>
 									<td>{ticket.product}</td>
 									<td>
-										<Badge color="teal">{ticket.status} </Badge>
+										<Badge color={ticket.status === "new" ? "teal" : "red"}>{ticket.status} </Badge>
 									</td>
 									<td>
 										<SecondaryBtn compact={true}>
@@ -67,4 +68,4 @@ const MyTickets: FC<MyTicketsProps> = (): JSX.Element => {
 	);
 };
 
-export default authenticate(MyTickets);
+export default dynamic(() => Promise.resolve(authenticate(MyTickets)), { ssr: false });

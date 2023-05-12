@@ -8,6 +8,7 @@ interface LinkElementProps {
 	children: ReactNode;
 	href: string;
 	style?: object;
+	target?: string;
 }
 
 const useSTayle = createStyles((theme) => ({
@@ -24,11 +25,11 @@ const useSTayle = createStyles((theme) => ({
 }));
 
 /***** COMPONENT-FUNCTION *****/
-const LinkElement: FC<LinkElementProps> = ({ children, href, style }): JSX.Element => {
+const LinkElement: FC<LinkElementProps> = ({ children, href, style, target }): JSX.Element => {
 	const { classes } = useSTayle();
 	/** return statement */
 	return (
-		<Link href={href} className={classes.link} style={style}>
+		<Link href={href} className={classes.link} style={style} target={target} rel={target && "noreferrer"}>
 			{children}
 		</Link>
 	);
