@@ -17,21 +17,25 @@ import { useTickets } from "@/context/TicketsContext";
 import dynamic from "next/dynamic";
 
 /***** TYPES *****/
-interface TicketProps {}
+interface TicketProps {
+	params: { id: string };
+}
 
 /***** COMPONENT-FUNCTION *****/
-const Ticket: FC<TicketProps> = (): JSX.Element => {
+const Ticket: FC<TicketProps> = ({ params }): JSX.Element => {
 	/*** States ***/
 	const [ticket, setTicket] = useState<Partial<Ticket>>({});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	/*** Variables ***/
+	const { id } = params;
 	const http = useAxios();
 	const router = useRouter();
 	const pathname = usePathname();
 	const { setTickets, tickets } = useTickets();
 
-	const ticketId = pathname.split("/").slice(-1).toString();
+	// alternative way to get params using pathname
+	// const ticketId = pathname.split("/").slice(-1).toString();
 
 	/*** Functions ***/
 
@@ -42,7 +46,7 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 	 */
 	const fetchTicket = async () => {
 		try {
-			const response = await http.get(BASE_URL + `/tickets/${ticketId}`);
+			const response = await http.get(BASE_URL + `/tickets/${id}`);
 
 			if (response.statusText === "OK") {
 				setTicket(response.data);
@@ -64,7 +68,7 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 		let confirm = window.confirm("Would you like to close ticket?");
 		if (confirm) {
 			try {
-				const response = await http.put(BASE_URL + `/tickets/${ticketId}`, { status: "closed" });
+				const response = await http.put(BASE_URL + `/tickets/${id}`, { status: "closed" });
 
 				if (response.statusText === "OK") {
 					setTicket(response.data);
@@ -85,11 +89,11 @@ const Ticket: FC<TicketProps> = (): JSX.Element => {
 	//redirects from page if not logged in
 	//fetches single ticket if there is id
 	useEffect(() => {
-		if (!ticketId) return;
+		if (!id) return;
 		fetchTicket();
-	}, [ticketId]);
+	}, [id]);
 
-	if (!ticketId) return notFound();
+	if (!id) return notFound();
 	/*** Return statement ***/
 	return (
 		<Section size="md">
