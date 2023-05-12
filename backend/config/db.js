@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = "mongodb+srv://aktson:nczwXPtZJbOeYWkd@akt.gormvi6.mongodb.net/akt?retryWrites=true&w=majority";
+
 
 
 const connectDB = async () => {
