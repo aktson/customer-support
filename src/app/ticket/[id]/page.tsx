@@ -9,7 +9,7 @@ import Section from "@/components/common/Section";
 import { Ticket } from "@/types/types";
 import SecondaryBtn from "@/components/common/buttons/SecondaryBtn";
 import { ArrowBack, CircleLetterX } from "tabler-icons-react";
-import { Flex, Paper, Stack, Space, Badge } from "@mantine/core";
+import { Flex, Paper, Stack, Space, Badge, CheckIcon } from "@mantine/core";
 import { getLocalTimeString } from "@/constants/actions";
 import PrimaryBtn from "@/components/common/buttons/PrimaryBtn";
 import { authenticate } from "@/constants/authenticate";
@@ -83,6 +83,29 @@ const Ticket: FC<TicketProps> = ({ params }): JSX.Element => {
 			}
 		}
 	};
+	/**
+	 * @description Submits new ticket request to backend
+	 * @param {event}
+	 * @return {void}
+	 */
+	const handleOpenTicket = async () => {
+		if (ticket.status === "new") return;
+
+		try {
+			const response = await http.put(BASE_URL + `/tickets/${id}`, { status: "new" });
+
+			if (response.statusText === "OK") {
+				setTicket(response.data);
+				const updatedTickets = tickets.filter((item) => item._id !== response.data._id);
+
+				setTickets([response.data, ...updatedTickets]);
+				notifications.show({ message: "Ticket closed", color: "green" });
+			}
+		} catch (error) {
+			console.log(error);
+			notifications.show({ message: "Could not fetch", color: "red" });
+		}
+	};
 
 	/*** Effect ***/
 
@@ -92,20 +115,22 @@ const Ticket: FC<TicketProps> = ({ params }): JSX.Element => {
 		if (!id) return;
 		fetchTicket();
 	}, [id]);
-
+	console.log(ticket.status);
 	if (!id) return notFound();
 	/*** Return statement ***/
 	return (
 		<Section size="md">
 			<Stack spacing="md" mx="auto" p="lg">
 				<Flex justify="space-between">
-					<SecondaryBtn leftIcon={<ArrowBack />} onClick={() => router.push("/myTickets")}>
+					<PrimaryBtn leftIcon={<ArrowBack />} onClick={() => router.push("/myTickets")}>
 						Back
-					</SecondaryBtn>
-					{ticket.status === "new" && (
-						<PrimaryBtn leftIcon={<CircleLetterX />} onClick={handleCloseTicket}>
+					</PrimaryBtn>
+					{ticket.status === "new" ? (
+						<SecondaryBtn variant="red" onClick={handleCloseTicket}>
 							close ticket
-						</PrimaryBtn>
+						</SecondaryBtn>
+					) : (
+						<SecondaryBtn onClick={handleOpenTicket}>Reopen ticket</SecondaryBtn>
 					)}
 				</Flex>
 				<Stack spacing="sm">

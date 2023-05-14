@@ -5,7 +5,7 @@ import { Button } from "@mantine/core";
 import { ButtonProps } from "@/types/types";
 
 /***** COMPONENT-FUNCTION *****/
-const SecondaryBtn: FC<ButtonProps> = ({ className, disabled, loading, onClick, children, fullWidth, leftIcon, compact }): JSX.Element => {
+const SecondaryBtn: FC<ButtonProps> = ({ className, disabled, loading, onClick, children, fullWidth, leftIcon, compact, variant }): JSX.Element => {
 	/** return statement */
 	return (
 		<Button
@@ -19,6 +19,7 @@ const SecondaryBtn: FC<ButtonProps> = ({ className, disabled, loading, onClick, 
 			leftIcon={leftIcon}
 			disabled={disabled}
 			compact={compact}
+			color={variant}
 			size={compact ? "xs" : "md"}
 			styles={() => ({
 				leftIcon: {

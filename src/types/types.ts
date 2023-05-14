@@ -25,6 +25,7 @@ export interface ButtonProps {
 	isActive?: boolean;
 	style?: object;
 	compact?: boolean;
+	variant?: "red";
 }
 
 export interface AuthObject {
