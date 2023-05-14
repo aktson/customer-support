@@ -4,6 +4,7 @@ import errorHandler from "./middlerware/errorMiddlware.js";
 import connectDB from "./config/db.js";
 import usersRoutes from "./api/users/usersRoutes.js";
 import ticketRoutes from "./api/tickets/ticketRoutes.js";
+import notesRoutes from "./api/notes/notesRoutes.js";
 import cors from "cors";
 
 const app = Express();
@@ -32,6 +33,9 @@ app.use("/api/users", usersRoutes)
 
 /* ticket routes */
 app.use("/api/tickets", ticketRoutes)
+
+/* notes routes */
+// app.use("/api/notes", notesRoutes)
 
 
 //MIDDLEWARE

@@ -15,28 +15,28 @@ export const JWT_SECRET = "ankit123";
 export const getMe = asyncHandler(async (req, res) => {
     console.log("me")
 
-    const user = {id:req.user._id, email:req.user.email, name:req.user.name}
+    const user = { id: req.user._id, email: req.user.email, name: req.user.name }
 
-    res.status(200).json(user)
+    return res.status(200).json(user)
 })
 
 /** Register a new user
  * @route /api/users
  * @access public
  */
-export const registerUser = asyncHandler (async (req, res) => {
-    const {name, email, password} = req.body;
+export const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password } = req.body;
 
     //validate
-    if(!name || !email || !password) {
+    if (!name || !email || !password) {
         res.status(400)
-        throw new Error({message: "Please include all fields"});
+        throw new Error({ message: "Please include all fields" });
     }
 
     //Check if user already exist
-    const userExist = await User.findOne({email:email})
+    const userExist = await User.findOne({ email: email })
 
-    if(userExist) {
+    if (userExist) {
         res.status(400)
         throw new Error("User already exists")
     }
@@ -46,18 +46,18 @@ export const registerUser = asyncHandler (async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     //create user
-    const user = await User.create({ name:name, email:email, password:hashedPassword })
+    const user = await User.create({ name: name, email: email, password: hashedPassword })
 
-    if(user) {
+    if (user) {
         res.status(201).json({
-            _id:user._id,
-            name:user.name,
-            email:user.email,
-            token:generateToken(user._id)
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
         })
     } else {
         res.status(400)
-        throw new error ("Invalid user data")
+        throw new error("Invalid user data")
     }
 })
 
@@ -66,17 +66,17 @@ export const registerUser = asyncHandler (async (req, res) => {
  * @access public
  */
 export const loginUser = asyncHandler(async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
     //if user is found then check if user's email and password match
-    if(user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await bcrypt.compare(password, user.password))) {
         res.status(200).json({
-            _id:user._id,
-            name:user.name,
-            email:user.email,
-            token:generateToken(user._id)
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
         })
     } else {
         res.status(401)
@@ -91,7 +91,7 @@ export const loginUser = asyncHandler(async (req, res) => {
  * @return {string} jwt token
  */
 const generateToken = (id) => {
-    return jwt.sign({id},JWT_SECRET, {
-        expiresIn:"30d"
-    } )
+    return jwt.sign({ id }, JWT_SECRET, {
+        expiresIn: "30d"
+    })
 }
